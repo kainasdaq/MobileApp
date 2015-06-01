@@ -1,5 +1,38 @@
 angular.module('starter.services', [])
 
+.service('LoginService', function( $q ){
+	return {
+		loginUser: function( name, pw ) {
+			var deferred = $q.defer();
+			var promise = deferred.promise;
+
+			if ( 'kai' == name && '123' == pw ) {
+				deferred.resolve( 'Welcome ' + name + '!' );
+			} else {
+				deferred.reject( 'Username or password is incorrect!' );
+			}
+
+			promise.success = function( fn ) {
+				promise.then( fn );
+				return promise;
+			}
+
+			promise.error = function( fn ) {
+				promise.then( null, fn );
+				return promise;
+			}
+
+			return promise;
+		}
+	}
+})
+
+.factory('WELCOME_MSG', function() {
+	welcome_msg = {};
+	welcome_msg.msg = "";
+	return welcome_msg;
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
@@ -47,4 +80,8 @@ angular.module('starter.services', [])
       return null;
     }
   };
+
+
 });
+
+
