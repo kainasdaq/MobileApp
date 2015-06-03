@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
-// login controller, Kai added on 5/31/2015
+// login controller
+// Kai Deng
 .controller('LoginCtrl', function( $scope, LoginService, $ionicPopup, $state, WELCOME_MSG ) {
 	$scope.login_msg = WELCOME_MSG;
 	$scope.data = {};

@@ -21,6 +21,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
+// make nav-view view-title at center
+.config(function($ionicConfigProvider) {
+	$ionicConfigProvider.navBar.alignTitle('center');
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
