@@ -1,0 +1,5 @@
+*.keystore
+*.sw*
+platforms/^.*
+*.log
+*.DS_Store
