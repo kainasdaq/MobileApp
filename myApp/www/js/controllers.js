@@ -1,44 +1,28 @@
 angular.module('starter.controllers', [])
 
-// login controller
-// Kai Deng
-.controller('LoginCtrl', function( $scope, LoginService, $ionicPopup, $state, WELCOME_MSG ) {
-	$scope.login_msg = WELCOME_MSG;
-	$scope.data = {};
+.controller('DashCtrl', function($scope, AuthService, $state, $ionicPopup, INTERPAGES_MSG) {
 	
+	$scope.interpages_msg = INTERPAGES_MSG;
+	$scope.data = {}
+
 	$scope.login = function() {
 		console.log( "LOGIN USER: " + $scope.data.username + " - PW: " + $scope.data.password );
-		/*	
-		LoginService.loginUser( $scope.data.username, $scope.data.password 
-			).success( function( data ) {
-				$scope.login_msg.msg = data;
-				$state.go( 'tab.dash' );
-			}).error( function( data ) {
-				$scope.login_msg.msg = data;
-				$ionicPopup.alert({
-					title: 'Login failed!',
-					template: 'Please check your credentials!'
-				});
-			});*/
 		
-		var promise = LoginService.loginUser( $scope.data.username, $scope.data.password );
-		promise.then( function(data) {
-				$scope.login_msg.msg = data;
-				$state.go('tab.dash');
-			}, function(data) {
-				$scope.login_msg.msg = data;
-				var alertPopup = $ionicPopup.alert({
-					title: 'Login failed!',
-					template: 'Please check your credentials!'
-				});
-			});
+		AuthService.login($scope.data.username, $scope.data.password).then( function(d){
+			$scope.jwt = d.data;
+			console.log( "$scope.jwt: " + angular.toJson($scope.jwt) );
+		});
+		
 	}
+
 })
 
-.controller('DashCtrl', function($scope, WELCOME_MSG) {
-	$scope.input = WELCOME_MSG;
+.controller('ChatsCtrl', function($scope, AuthService, INTERPAGES_MSG) {
+	$scope.interpages_msg = INTERPAGES_MSG;
+	$scope.jwt = AuthService.getJWT();
 })
 
+/*
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -53,6 +37,7 @@ angular.module('starter.controllers', [])
     Chats.remove(chat);
   }
 })
+*/
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);

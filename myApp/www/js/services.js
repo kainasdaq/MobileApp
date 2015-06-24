@@ -1,37 +1,30 @@
 angular.module('starter.services', [])
 
-.service('LoginService', function( $q ){
+.factory('INTERPAGES_MSG', function() { // global data share between pages
+	interpages_msg = {};
+	//interpages_msg.msg = "";
+	//interpages_msg.token = "";
+	//interpages_msg.status = "";
+	return interpages_msg;
+})
+
+
+.factory('$localstorage', ['$window', function($window) {
 	return {
-		loginUser: function( name, pw ) {
-			var deferred = $q.defer();
-			var promise = deferred.promise;
-
-			if ( 'kai' == name && '123' == pw ) {
-				deferred.resolve( 'Welcome ' + name + '!' );
-			} else {
-				deferred.reject( 'Username or password is incorrect!' );
-			}
-
-			promise.success = function( fn ) {
-				promise.then( fn );
-				return promise;
-			}
-
-			promise.error = function( fn ) {
-				promise.then( null, fn );
-				return promise;
-			}
-
-			return promise;
+		set: function(key, value) {
+			$window.localStorage[key] = value;
+		},
+		get: function(key, defaultValue) {
+			return $window.localStorage[key] || defaultValue;
+		},
+		setObject: function(key, value) {
+			$window.localStorage[key] = JSON.stringify(value);
+		},
+		getObject: function(key) {
+		    return JSON.parse($window.localStorage[key] || '{}');
 		}
 	}
-})
-
-.factory('WELCOME_MSG', function() {
-	welcome_msg = {};
-	welcome_msg.msg = "";
-	return welcome_msg;
-})
+}])
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
@@ -81,7 +74,59 @@ angular.module('starter.services', [])
     }
   };
 
-
 });
+
+/* ======  AuthService  ====== */
+
+var AuthService = angular.module('AuthService', []);
+
+AuthService.factory('AuthService', ['$http', function($http) {
+	var url = "http://127.0.0.1:8000/token-demo/api-token-auth/";
+	var res = [];
+
+	return {
+		login: function(username, password){
+						
+			var creds = {
+				username: username,
+				password: password,
+			};
+			
+			Object.toParams = function ObjectToParams(obj) {
+				var p = [];
+				for (var key in obj) {
+					p.push(key + '=' + encodeURIComponent(obj[key]));
+				}
+				return p.join('&');
+			};
+
+			var ret = $http({
+				url: url,
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+				data: Object.toParams(creds),
+			})
+			.success( function(response){
+				res = response;
+				console.log("login() in AuthService success: " + angular.toJson(response) );
+				return response;
+			}).error( function(response){
+				console.log("login() in AuthService error: " + angular.toJson(response) );
+			});
+			
+			return ret;
+		},
+		
+		getJWT: function() {
+			return jwt;		
+		},
+		
+		refreshJWT: function() {
+			return jwt;
+		}
+	}// return
+	
+}]);
+
 
 
