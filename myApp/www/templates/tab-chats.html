@@ -1,13 +1,12 @@
 <ion-view view-title="JWT Token">
   <ion-content class="padding">
-	<p>Token: {{interpages_msg.token}}</p>
-	{{$scope.jwt}}
-	<!--ion-list>
-		<p>Items in $localstorage:</p>
-		<ion-item ng-repeat='item in $localstorage'>
-			<p>{{item}}</p>
-		</ion-item>
-	</ion-list-->
+	<p>Token from interpages_msg: {{interpages_msg.jwt}}</p>
+	
+	<button class="button button-block button-calm" ng-click="getToken()">get token</button>	
+	<p>Token from getToken(): {{jwt}}</p>
+	
+	<button class="button button-block button-calm" ng-click="refreshToken()">refresh token</button>	
+	<p>Token from refreshToken(): {{newjwt}}</p>
 
 	<!--ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">

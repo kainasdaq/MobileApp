@@ -1,9 +1,13 @@
 <ion-view view-title="Account">
   <ion-content>
-    <ion-list>
+    <button class="button button-block button-calm" ng-click="accessRestricted()">Access restricted page</button>	
+    <p>Data from restricted page(): {{returndata}}</p>
+
+  
+    <!--ion-list>
     <ion-toggle  ng-model="settings.enableFriends">
         Enable Friends
     </ion-toggle>
-    </ion-list>
+    </ion-list-->
   </ion-content>
 </ion-view>
